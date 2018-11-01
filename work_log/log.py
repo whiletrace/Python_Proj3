@@ -1,5 +1,8 @@
 import csv
 import collections
+import re
+import pdb
+from datetime import datetime
 
 
 class WorkLog(object):
@@ -12,21 +15,53 @@ class WorkLog(object):
 
     # work log will write entries to a csv file.
     def logwrite(self, *args):
-
+        # create a write file 
         with open('entries.csv', 'a', newline = '') as csvfile:
-            # create an entry from user input(Menu)e
+            # create an entry from user input(Menu)
             fieldnames =['date', 'project_name', 'duration', 'optional_notes']
+            # from user input create a dict
             writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
             writer.writeheader()
+            # write to csv file from key falue pairs in dict
+            # from user input create a dict
             writer.writerow({'date': date,'project_name':project_name,
                                 'duration': duration, 'optional_notes':
                                  optional_notes })
-            
     
-        # create an entry from user input(Menu)
-        # from user input create a dict 
-        # create a write file 
-        # write to csv file from key falue pairs in dict 
+
+    # convert string to datetime object
+    def str2date(self, string):
+        #test strint against pattern
+        #if string matches mm/dd/yyyy
+        pattern = re.compile("(\d{2}\/\d{2}\/\d{4})")
+        match = pattern.fullmatch(string)
+        pdb.set_trace()
+        if match:
+            #try string
+            try:
+                # String to datetime:
+                
+                d = datetime.strptime(string, '%m/%d/%Y')
+
+                print(d)
+
+            except ValueError:
+                print('This is not a valid date')
+                
+        else:
+            print('sorry dude this needs help')
+        
+            
+                # yield object
+        # except if string does not match valid date:
+            # value error
+                # message this does not seem to be a valid date or date not
+                # formatted properly please type a date
+        
+        
+    # Date time to string:
+    # convert datetime object to string
+    # return string
 
     # work log will read files from csv file
     def logread(self,csv_file):
@@ -41,9 +76,7 @@ class WorkLog(object):
         # be able to iterate over entry from file
         # output entries 
 
-    # Date time to string:
-        # convert datetime object to string
-        # return string
+   
 
     # String to datetime:
          # convert string to datetime object
@@ -75,5 +108,8 @@ duration = '346'
 optional_notes = 'these are optional notes'
 a = WorkLog()
 a.logwrite(date, project_name, duration, optional_notes)
-a.logread('entries.csv')
+# a.logread('entries.csv')
+a.str2date('15/12/1999')
+
+a.str2date('12/boogabooga/1990')
 
