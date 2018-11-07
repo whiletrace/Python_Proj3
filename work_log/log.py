@@ -4,31 +4,50 @@ import re
 import pdb
 from datetime import datetime, timedelta
 from entry import Entry
+from main import Menu
 
 
 class WorkLog(object):
     """docstring for WorkLog"""
     def __init__(self, csv_file = None):
         super(WorkLog, self).__init__()
-        # self.logwriter = self.logwrite()
+        self.logwriter = self.logwrite()
         self.logreader = self.logread(csv_file)
+        
     # Work log will be an aggragate of indivual entries
         # work log has entries
 
     # work log will write entries to a csv file.
     def logwrite(self, *args):
         # create a write file 
+        pdb.set_trace()
         with open('entries.csv', 'a', newline = '') as csvfile:
             # create an entry from user input(Menu)
-            fieldnames =['date', 'project_name', 'duration', 'optional_notes']
-            # from user input create a dict
-            writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
-            writer.writeheader()
-            # write to csv file from key falue pairs in dict
-            # from user input create a dict
-            writer.writerow({'date': date,'project_name':project_name,
-                                'duration': duration, 'optional_notes':
-                                 optional_notes })
+            
+            # useing csv.sniffer to check to see if a header is present
+            #hashead = csv.Sniffer().has_header(csvfile.readline())
+            writer = csv.writer(csvfile, delimiter =',')
+            #file = open('entries.csv')
+            #filelen = len(file.readlines())
+            #print(filelen)
+               # write to csv file from key falue pairs in dict
+            #if filelen == 0:
+                #writer.writeheader()
+            
+            
+            writer.writerows()
+                
+            #else:
+                # from user input create a dict
+                #writer.writerow({'date': date,'project_name':project_name,
+                                 #'duration': duration, 'optional_notes':
+                                  #optional_notes })
+
+
+
+
+            
+                
     
     # convert string to datetime object
     def str2date(self, string):
@@ -65,24 +84,33 @@ class WorkLog(object):
     # work log will read files from csv file
     # context manager design pattern
     def logread(self,csv_file):
+        pdb.set_trace()
+        entries = []
         with open('entries.csv', newline = '') as csvfile:
             fieldnames =['date', 'project_name', 'duration', 'optional_notes']
             reader = csv.DictReader(csvfile, fieldnames = fieldnames)
-            # be able to iterate over entry from file
+            # be able to iterate over entry from filefile = open('entries.csv')
+            file = open('entries.csv')
+            
+
+            print(dir(csvfile))
+            
             for row in reader:
                 for key, value in row.items():
                     if key == 'date' or key == 'duration':
                         # convert to datetime for search and pattern matching
                         row[key] = self.str2date(value)
             
-            # from csv file create entry objects
-            entries = [Entry(**row)]
-            # tests to see if string -> datetime and timedelta has 
-            # occured and is stored within objects attr
-            for entry in entries:
-                print(getattr(entry,'duration'))
+                # from csv file create entry objects
+                #print(row)
+                entries.append(Entry(**row))
+                # tests to see if string -> datetime and timedelta has 
+                # occured and is stored within objects attr
+                
+               
             # output entries 
-            return entries
+        print(entries)
+        return entries
 
     # String to datetime:
          # convert string to datetime object
@@ -108,4 +136,9 @@ class WorkLog(object):
         # if entry matches a regex pattern 
         # return all relevant entries
         
+date = '12/23/2018'
+project_name = 'dummydata'
+duration = '123'
+optional_notes = 'this is optional'
+
 
