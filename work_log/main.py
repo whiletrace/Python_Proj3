@@ -1,51 +1,96 @@
 import re
 import pdb
 import collections
+from log import WorkLog
+from utilities import Utility
+from menu import Menu
 
-class Menu:
-    """docstring for Menu"""
+
+class Main:
+
+    """
+Main class gathers and procecsses user input
+
+methods of Main: userchoice1, user_entry_data, user_search.
+instance vaiables: datalist
+
+"""
+
     def __init__(self):
-        super(Menu, self).__init__()
-        
-        
+        super(Main, self).__init__()
 
-    def mainmenu(self):
-    # create menu items main navigation 2 items either to create or search 
-    
-        print('WorkLog')
-        print('\n a) Create Entry\n b) Search Entry')
-        # grab and store user input
+    def userchoice1(self):
+        """ 
+        grabs and validates user choice
+
+        Initialize menu object to display menu items menu1 stores
+        user input while loop runs until user provides a valid input 
+        based upon input the method calls: either self.user_entry_data method
+        or will call an instance of menu.submenu() which is a method of 
+        Menu class
+
+        """
+         # grab and store user input
+        menu = Menu()
+        menu.main()
         while True:
-            menu1 = input("please choose weather to create option a),or serarch option b)" )
+            menu1 = input(
+                            'please choose weather'
+                            'to create option a),or'
+                            'search option b) '
+                          
+                        )
+            # tests for a valid resonse
+            # if user provides valid response loop will break
             if menu1.lower() not in ('a', 'b'):
                 print("Not an appropriate choice.")
             else:
                 break
+        # based upon user input call method
         if menu1 == 'a':
-            self.submenu1()
-                
-                
-        print(menu1)
+            self.user_entry_data()
+        elif menu1 =='b':
+            menu.submenu()
+            self.user_search()
+
     # if create sub 
-    def submenu1(self):
-        pdb.set_trace()
-        datalist =[]
-        useri = collections.namedtuple('useri', ['date','project_name','duration','optional_notes'])
+    def user_entry_data(self):
+        """
+        user_entry_data collects and processes user data
+
+        user data is collected and stored in date, duration,
+        project_name, and 
+        """
+        datalist = []
+        useri = collections.namedtuple(
+                                       'useri', ['date','project_name',
+                                       'duration','optional_notes'
+                                       ])
         a = True
         
         while a:
          #entry date grab input
             while True:
-                date =input("please input a date for the entry in the format mm/dd/yyyy: ")
+                date =input(
+                             'please input a date for' 
+                              'the entry in the format mm/dd/yyyy: ' 
+                             )
                 pattern = re.compile("(\d{2}\/\d{2}\/\d{4})")
                 match = pattern.fullmatch(date)
                 if not match:
                         print('this is not an appropriate format')
                 else:
-                     break
+                    test_date = Utility()
+                    date = test_date.date2string(test_date.str2date(date))
+                    
+                    break
             # entry duration grab input
             while True:
-                duration = input("please input the duration of the task is minutes: ")
+                duration = input(
+                                 'please input the duration '
+                                 'of the task is minutes: '
+                                 
+                                )
                 durpattern = re.compile("(\d+)")
                 durmatch = durpattern.fullmatch(duration)
                 
@@ -54,61 +99,98 @@ class Menu:
                 else:
                     break
                    
-
+            # project name grab input
             project_name = input("please give your project a name: ")
+            # optional notes grab input
             optional_notes = input("please add notes(optional):" )
-            print('\n Thankyou your entry has been created')
+
+
             user_data = useri(date, project_name, duration, optional_notes)
+            print(user_data)
             datalist.append(user_data)
+
             print('\na) create a new entry\nb) return to main menu')
             choice = input('please type your choice')
             if choice == 'a':
                 continue
             else:
-                return datalist
-        
-    def return_to_main(self):
-         self.mainmenu()
-
-           
-
-
-        
-        
-
+                try:
+                    worklog_initiate = WorkLog()
+                    worklog_initiate.logwrite(datalist)
+                    # confirmation of entry creation
+                    print('\n Thankyou your entry has been created')
+                    break
+                except ValueError:
+                    print('looks like a value couldnt beebs written to file')
+                finally:
+                    self.mainmenu()
     
-    
-        
-
-        
-
-        
-
-
-
-
-
-
-            
-        
-        # project name grab input
-        # optional notes grab input
-        # confirmation of entry creation
-
     #if search sub navigation(display)
-        # menu item search date
-        # menu item search duration
-        # menu item search by string
-        # menu item search by pattern
+    
+    def user_search(self):
+        while True:
+            #prompt choose search method 
+            search_option = input('please choose a search option: ')
+            if search_option not in ('a', 'b','c','d'):
+                print('this is not an available option')
+            else:
+                break
+        # if date prompt for date get input
+        if search_option == 'a':
+            
+            while True:
+                date =input(
+                               'please input a date to search '
+                               'in the format mm/dd/yyyy: '
+                            )
+                pattern = re.compile("(\d{2}\/\d{2}\/\d{4})")
+                match = pattern.fullmatch(date)
+                if not match:
+                        print('this is not an appropriate format')
+                else:
+                    utility = Utility()
+                    str2date = utility.str2date(date)
+                    worklog_initiate = WorkLog()
+                    search_results = worklog_initiate.search_by_date(str2date)
+                    break
+        #if duration prompt for duration get input
+        elif search_option =='b':
+            while True:
+                duration = input(
+                                   'please input the duration of the task '
+                                   'that you want to search: '
+                                )
+                durpattern = re.compile("(\d+)")
+                durmatch = durpattern.fullmatch(duration)
+                
+                if not durmatch:
+                    print('this is not an appropriate format')
+                else:
+                    utility = Utility()
+                    str2time = utility.str2time(duration)
+                    worklog_initiate = WorkLog()
+                    search_results = worklog_initiate.search_by_duration(str2time)
 
-        #prompt choose search method 
-            # get user input
-                # if date prompt for date get input
-                #if duration prompt for duration get input
-                # if string  prompt for string get input
-                # if pattern prompt for pattern get input
-       
-a = Menu()
-a.mainmenu()
+                    break
+        # if string  prompt for string get input
+        elif search_option =='c':
+            string = input(
+                            'please types string to we'
+                            'will search that against: '
+                            )
+            worklog_initiate = WorkLog()
+            search_results = worklog_initiate.search_by_string(string)
 
-a.return_to_main()
+        # if pattern prompt for pattern get input
+        elif search_option == 'd':
+            
+            pattern = input(
+                               'please input your regex'
+                               'pattern here and we will '
+                               'look for matching entries: '
+                            )
+
+if __name__ == '__main__':
+   a = Main()
+   a.userchoice1()  
+   

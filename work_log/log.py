@@ -4,44 +4,36 @@ import re
 import pdb
 from datetime import datetime, timedelta
 from entry import Entry
-from main import Menu
+from utilities import Utility
+
 
 
 class WorkLog(object):
     """docstring for WorkLog"""
     def __init__(self, csv_file = None):
         super(WorkLog, self).__init__()
-        self.logwriter = self.logwrite()
-        self.logreader = self.logread(csv_file)
+        self.entries = self.logread(csv_file)
+        
         
     # Work log will be an aggragate of indivual entries
         # work log has entries
 
     # work log will write entries to a csv file.
-    def logwrite(self, *args):
+    def logwrite(self, input):
         # create a write file 
-        pdb.set_trace()
+        print(input)
+        
         with open('entries.csv', 'a', newline = '') as csvfile:
             # create an entry from user input(Menu)
+            fieldnames =['date','project_name','duration','optional_notes']
             
-            # useing csv.sniffer to check to see if a header is present
-            #hashead = csv.Sniffer().has_header(csvfile.readline())
-            writer = csv.writer(csvfile, delimiter =',')
-            #file = open('entries.csv')
-            #filelen = len(file.readlines())
-            #print(filelen)
-               # write to csv file from key falue pairs in dict
-            #if filelen == 0:
-                #writer.writeheader()
+            writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
             
-            
-            writer.writerows()
+            for entry in input:
+                writer.writerow(entry._asdict())
                 
-            #else:
-                # from user input create a dict
-                #writer.writerow({'date': date,'project_name':project_name,
-                                 #'duration': duration, 'optional_notes':
-                                  #optional_notes })
+                
+            
 
 
 
@@ -50,32 +42,7 @@ class WorkLog(object):
                 
     
     # convert string to datetime object
-    def str2date(self, string):
-        #test strint against pattern
-        dpattern = re.compile("(\d{2}\/\d{2}\/\d{4})")
-        durpattern = re.compile("(\d+)")
-        dmatch = dpattern.fullmatch(string)
-        durmatch = durpattern.fullmatch(string)
-        
-        #if string matches mm/dd/yyyy
-        if dmatch:
-            #try string
-            try:
-                # String to datetime:
-                d = datetime.strptime(string, '%m/%d/%Y')
-                return d
-            # except if string does not match valid date:
-            except ValueError:
-                # message this does not seem to be a valid date or date not
-                print('This is not a valid date')
-        # if string not match dpattern will try to match durpattern
-        elif durmatch:
-            # if match will convert string to datetime.timedelta
-            try:
-                dur = timedelta(minutes= int(string))
-                return dur
-            except ValueError:
-                print('this is not the requested whatever')
+    
         
     # Date time to string: 
     # convert datetime object to string
@@ -84,22 +51,22 @@ class WorkLog(object):
     # work log will read files from csv file
     # context manager design pattern
     def logread(self,csv_file):
-        pdb.set_trace()
+        
         entries = []
         with open('entries.csv', newline = '') as csvfile:
             fieldnames =['date', 'project_name', 'duration', 'optional_notes']
             reader = csv.DictReader(csvfile, fieldnames = fieldnames)
             # be able to iterate over entry from filefile = open('entries.csv')
             file = open('entries.csv')
-            
-
-            print(dir(csvfile))
+            utility = Utility()
             
             for row in reader:
                 for key, value in row.items():
-                    if key == 'date' or key == 'duration':
+                    if key == 'date':
                         # convert to datetime for search and pattern matching
-                        row[key] = self.str2date(value)
+                        row[key] = utility.str2date(value)
+                    elif key == 'duration':
+                        row[key] = utility.str2time(value)
             
                 # from csv file create entry objects
                 #print(row)
@@ -112,23 +79,54 @@ class WorkLog(object):
         print(entries)
         return entries
 
-    # String to datetime:
-         # convert string to datetime object
-         # return object 
+    
         
-    # search by date:
+    def search_by_date(self, obj):
+        results = []
+        utility = Utility()
         # iterate through all entries
+        
+        for entry in self.entries:
         # if entries match user given date
+            if obj == getattr(entry,'date'):
+                results.append(entry)
+        # return all entries that match the date
+        for entry in results[:]:
+            setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
+            print(entry)
+                
+            
+                
         # return all entries that match the date
 
     # search by duration:
+    def search_by_duration(self, obj):
+        results = []
+        utility = Utility()
+        
         # iterate through all entries
+        for entry in self.entries:
+        # if entries match user given date
+            if obj == getattr(entry,'duration'):
+                results.append(entry)
+        # return all entries that match the date
+        for entry in results[:]:
+            setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
+            print(entry)
+        
         # if entries match user given duration of time 
         # return all entries that match
 
     # search by exact string:
+    def search_by_string(self,string):
+        results =[]
         # iterate through all entries
-        # if string is present in the entry
+        for entry in self.entries:
+            # if string is present in the entry
+            if string in entry.project_name or string in entry.optional_notes:
+                results.append(entry)
+                print(entry)
+        
         # return all entries that match
 
     # search by pattern:
@@ -136,9 +134,6 @@ class WorkLog(object):
         # if entry matches a regex pattern 
         # return all relevant entries
         
-date = '12/23/2018'
-project_name = 'dummydata'
-duration = '123'
-optional_notes = 'this is optional'
+
 
 
