@@ -147,11 +147,15 @@ instance vaiables: datalist
                 match = pattern.fullmatch(date)
                 if not match:
                         print('this is not an appropriate format')
-                else:
+                elif match:
                     utility = Utility()
                     str2date = utility.str2date(date)
                     worklog_initiate = WorkLog()
                     search_results = worklog_initiate.search_by_date(str2date)
+                if len(search_results) == 0:
+                    print('could not find a matching entry')
+                    continue
+                else:
                     break
         #if duration prompt for duration get input
         elif search_option =='b':
@@ -165,30 +169,51 @@ instance vaiables: datalist
                 
                 if not durmatch:
                     print('this is not an appropriate format')
-                else:
+                elif durmatch:
                     utility = Utility()
                     str2time = utility.str2time(duration)
                     worklog_initiate = WorkLog()
                     search_results = worklog_initiate.search_by_duration(str2time)
 
+                if len(search_results) == 0:
+                    print('could not find a matching entry')
+                    continue
+                else:
                     break
+
         # if string  prompt for string get input
         elif search_option =='c':
-            string = input(
-                            'please types string to we'
-                            'will search that against: '
-                            )
-            worklog_initiate = WorkLog()
-            search_results = worklog_initiate.search_by_string(string)
-
+            while True:
+                string = input(
+                                'please types string to we'
+                                'will search that against: '
+                                )
+                worklog_initiate = WorkLog()
+                search_results = worklog_initiate.search_by_string(string)
+                if len(search_results) == 0:
+                    print('could not find a matching entry')
+                    continue
+                else:
+                    break
         # if pattern prompt for pattern get input
         elif search_option == 'd':
-            
-            pattern = input(
-                               'please input your regex'
-                               'pattern here and we will '
-                               'look for matching entries: '
-                            )
+            pdb.set_trace()
+            while True:
+                pattern = input(
+                                   'please input your regex'
+                                   'pattern here and we will '
+                                   'look for matching entries: '
+                                )
+               
+                worklog_initiate = WorkLog()
+                search_results = worklog_initiate.search_by_pattern(pattern)
+                if len(search_results) == 0:
+                    print('could not find a matching entry')
+                    continue
+                else:
+                    break
+                    
+                
 
 if __name__ == '__main__':
    a = Main()

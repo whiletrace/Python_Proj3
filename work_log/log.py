@@ -95,7 +95,7 @@ class WorkLog(object):
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)
                 
-            
+        return results
                 
         # return all entries that match the date
 
@@ -114,8 +114,7 @@ class WorkLog(object):
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)
         
-        # if entries match user given duration of time 
-        # return all entries that match
+        return results
 
     # search by exact string:
     def search_by_string(self,string):
@@ -126,14 +125,25 @@ class WorkLog(object):
             if string in entry.project_name or string in entry.optional_notes:
                 results.append(entry)
                 print(entry)
+
+        return results
         
         # return all entries that match
 
     # search by pattern:
+    def search_by_pattern(self,user_input):
+        pdb.set_trace()
+        results = []
+        pattern = re.compile(user_input)
+
         #iterate through entries
-        # if entry matches a regex pattern 
-        # return all relevant entries
-        
+        for entry in self.entries:
+            match = pattern.search(entry.project_name or entry.optional_notes)
+            # if entry matches a regex pattern 
+            if match:
+                # return all relevant entries
+                results.append(entry)
+        return results
 
 
 
