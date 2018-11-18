@@ -1,15 +1,17 @@
 class Menu(object):
-    """docstring for Menu"""
+
+    """Menu class displays menu items moethods are main and submenu"""
+    
     def __init__(self):
         super(Menu, self).__init__()
-    # create menu items main navigation 
-    # items either to create or search
     
     def main(self):
+        """ create menu items main navigation"""
         print('WorkLog')
         print('\n a) Create Entry\n b) Search Entry')
 
     def submenu(self):
+        """ create menu items for search entries"""
         print(
               '''search options:\n
                  a) search by date

@@ -3,10 +3,17 @@ from datetime import timedelta
 import pdb
 
 class Utility:
-    """docstring for Utility"""
+    """Utility class handles string-> datetime -> string operations
+
+    methods are:str2date, str2time, date2string
+    
+    """
    
     def str2date(self, string):
-        
+        """executes string to datetime object conversion
+
+           takes string as argument returns value:datetime object
+        """
         while True:
             try:
                 # String to datetime:
@@ -26,14 +33,18 @@ class Utility:
                         continue
 
     def str2time(self, string):
-        
+        """executes string to datetime.timedelta object
+
+           takes string as object returns a timedelta obect
+
+        """
         while True:
             try:
-                # String to datetime:
+                # String to timedelta:
                 minutes_to_duration = timedelta(minutes = int(string))
                 return minutes_to_duration
                 break
-            # except if string does not match valid date:
+            # except if string is a invalid format for timedelta conversion
             except ValueError:
                 print('This is not a valid duration')
                 string = input("please input a numberstring ")
@@ -45,10 +56,11 @@ class Utility:
                 except ValueError:
                         continue
 
-    # String to datetime:
+    
          # convert string to datetime object
          # return object 
     def date2string(self, dateobject):
+        """date2string executes datetime to string conversion return a string"""
         datestring = dateobject.strftime('%m/%d/%Y')
         return datestring
 
