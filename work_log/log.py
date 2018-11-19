@@ -1,8 +1,9 @@
-import csv
 import collections
-import re
-import pdb
+import csv
 from datetime import datetime, timedelta
+from datetime import timedelta
+import re
+
 from entry import Entry
 from utilities import Utility
 
@@ -17,7 +18,7 @@ class WorkLog(object):
     """
     def __init__(self, csv_file = None):
         super(WorkLog, self).__init__()
-        self.entries = self.logread(csv_file)
+        
         
 
     def logwrite(self, input):
@@ -64,32 +65,44 @@ class WorkLog(object):
                 entries.append(Entry(**row))
         
         # output entries
-        print(entries)
         return entries
 
     
         
     def search_by_date(self, obj):
+        """ Handles logic for search by date
 
+            instance variable: results returns a list of entries
+            that are appended from self.entries class variable
+            which calls Worklog.logread() that methods return
+            value is a list entry ojects
+        """
         results = []
         utility = Utility()
         # iterate through all entries
         
-        for entry in self.entries:
+        for entry in self.logread('entries.csv'):
         # if entries match user given date
             if obj == getattr(entry,'date'):
                 results.append(entry)
-        # return all entries that match the date
+        # converts datetime objects to string for formatting for display
         for entry in results[:]:
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)
-                
+        
         return results
                 
    
 
     # search by duration:
     def search_by_duration(self, obj):
+        """ Handles logic for search by duration
+
+            instance variable: results returns a list of entries
+            that are appended from self.entries class variable
+            which calls Worklog.logread() that methods return
+            value is a list entry ojects
+        """
         results = []
         utility = Utility()
         
@@ -98,7 +111,7 @@ class WorkLog(object):
         # if entries match user given date
             if obj == getattr(entry,'duration'):
                 results.append(entry)
-        # return all entries that match the date
+         # converts datetime objects to string for formatting for display
         for entry in results[:]:
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)
@@ -107,34 +120,51 @@ class WorkLog(object):
 
     # search by exact string:
     def search_by_string(self,string):
+        """ Handles logic for exact search
+
+            instance variable: results returns a list of entries
+            that are appended from self.entries class variable
+            which calls Worklog.logread() that methods return
+            value is a list entry ojects
+        """
         results =[]
         # iterate through all entries
         for entry in self.entries:
             # if string is present in the entry
+            # append entry to list results
             if string in entry.project_name or string in entry.optional_notes:
                 results.append(entry)
                 print(entry)
+         # converts datetime objects to string for formatting for display
         for entry in results[:]:
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)
 
         return results
         
-        # return all entries that match
+        
 
     # search by pattern:
     def search_by_pattern(self,user_input):
+        """ Handles logic for exact search
+
+            instance variable: results returns a list of entries
+            that are appended from self.entries class variable
+            which calls Worklog.logread() that methods return
+            value is a list entry ojects
+        """
         pdb.set_trace()
         results = []
         pattern = re.compile(user_input)
 
-        #iterate through entries
+        # iterate through entries
         for entry in self.entries:
             match = pattern.search(entry.project_name or entry.optional_notes)
             # if entry matches a regex pattern 
             if match:
-                # return all relevant entries
+               # appends relevant entries to list results
                 results.append(entry)
+         # converts datetime objects to string for formatting for display
         for entry in results[:]:
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
             print(entry)

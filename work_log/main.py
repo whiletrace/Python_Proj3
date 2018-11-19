@@ -1,10 +1,15 @@
-import re
-import pdb
 import collections
-from log import WorkLog
-from utilities import Utility
-from menu import Menu
+import os
+import re
 
+
+from log import WorkLog
+from menu import Menu
+from utilities import Utility
+
+def clear():
+    """Clears the screen"""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 class Main:
 
@@ -35,9 +40,9 @@ instance vaiables: useri
         menu.main()
         while True:
             menu1 = input(
-                            'please choose weather'
-                            'to create option a),or'
-                            'search option b)'
+                            'please choose '
+                            'option a), or '
+                            'option b) '
                          )
             # tests for a valid resonse
             # if user provides valid response loop will break
@@ -67,6 +72,7 @@ instance vaiables: useri
         """
 
         # instance variables: store and pass data to 
+        clear()
         datalist = []
         useri = collections.namedtuple(
                                        'useri', ['date','project_name',
@@ -79,7 +85,7 @@ instance vaiables: useri
          #entry date grab input
             while True:
 
-                date =input(
+                date = input(
                              'please input a date for' 
                               'the entry in the format mm/dd/yyyy: ' 
                              )
@@ -127,10 +133,11 @@ instance vaiables: useri
 
             # option create another entry or retunt main menu 
             print('\na) create a new entry\nb) return to main menu')
-            choice = input('please type your choice')
+            choice = input('please type your choice: ')
             #if another entry continue statement is run and user
             # will be prompted for data again
             if choice == 'a':
+                clear()
                 continue
             # if main menu
             else: 
@@ -141,17 +148,17 @@ instance vaiables: useri
                     worklog_initiate = WorkLog()
                     worklog_initiate.logwrite(datalist)
                     # confirmation of entry creation
+                    clear()
                     print('\n Thankyou your entry has been created')
-                    break
+                    '\n'
+                    self.userchoice1()
                 # Exception if there is a issue with entry creation
                 except ValueError:
                     print('I am sorry but the entry was not saved')
                 # finally statement instantiates a new Menu()
                 # calls Menu.main() method
                 # redirects user to main menu options
-                finally:
-                    menu_redirect = Menu()
-                    menu_redirect.main()
+                
     
     
     def user_search(self):
@@ -168,13 +175,15 @@ instance vaiables: useri
             #prompt choose search method 
             search_option = input('please choose a search option: ')
             #if user provides a invalid response to prompt
-            if search_option not in ('a', 'b','c','d'):
+            if search_option not in ('a', 'b', 'c', 'd', 'e'):
                 print('this is not an available option')
             # if response valid loop will break 
             else:
                 break
+
         # if date prompt for date get input
         if search_option == 'a':
+            clear()
             # begin loop for entry search by date data collection
             while True:
 
@@ -199,6 +208,9 @@ instance vaiables: useri
                     worklog_initiate = WorkLog()
                     # call to WorkLog.search_by_date mentod
                     # method handles search logic/ display of relevant entry
+                    clear()
+                    print('here are the matching entries: ')
+                    "\n"
                     search_results = worklog_initiate.search_by_date(str2date)
                 # if now matching entries
                 if len(search_results) == 0:
@@ -208,10 +220,10 @@ instance vaiables: useri
                     continue
                 # if match loop breaks and search_by_date will display 
                 else:
-                    break
+                    
+                    self.userchoice1()
         #if duration prompt for duration get input
         elif search_option =='b':
-            earch_option == 'a':
             # begin loop for entry search by duration data collection
             while True:
                 duration = input(
@@ -236,14 +248,20 @@ instance vaiables: useri
                     worklog_initiate = WorkLog()
                     # call to WorkLog.search_by_duration
                     # method handles search logic/ display of relevant entry
-                    search_results = worklog_initiate.search_by_duration(str2time)
-                 # if no matching entries
+                    clear()
+                    print('here are the matching entries: ')
+                    "\n"
+                    search_results = worklog_initiate.search_by_date(str2date)
+                # if now matching entries
                 if len(search_results) == 0:
-                      # message no entries
+                    # message no entries
                     print('could not find a matching entry')
+                    # the prompt for user input begins again
                     continue
+                # if match loop breaks and search_by_date will display 
                 else:
-                    break
+                    
+                    self.userchoice1()
 
         # if string  prompt for string get input
         elif search_option =='c':
@@ -256,14 +274,20 @@ instance vaiables: useri
                 worklog_initiate = WorkLog()
                 # call to WorkLog.search_by_duration
                 # method handles search logic/ display of relevant entry
-                search_results = worklog_initiate.search_by_string(string)
-                # if no matching entries
+                clear()
+                print('here are the matching entries: ')
+                "\n"
+                search_results = worklog_initiate.search_by_date(str2date)
+                # if now matching entries
                 if len(search_results) == 0:
+                    # message no entries
                     print('could not find a matching entry')
                     # the prompt for user input begins again
                     continue
+                # if match loop breaks and search_by_date will display 
                 else:
-                    break
+                    
+                    self.userchoice1()
         # if pattern prompt for pattern get input
         elif search_option == 'd':
             pdb.set_trace()
@@ -277,16 +301,25 @@ instance vaiables: useri
                 worklog_initiate = WorkLog()
                 #call to WorkLog.search_by_duration
                 # method handles search logic/ display of relevant entry
-                search_results = worklog_initiate.search_by_pattern(pattern)
+                clear()
+                print('here are the matching entries: ')
+                "\n"
+                search_results = worklog_initiate.search_by_date(str2date)
+            # if now matching entries
                 if len(search_results) == 0:
+                    # message no entries
                     print('could not find a matching entry')
+                    # the prompt for user input begins again
                     continue
+                # if match loop breaks and search_by_date will display 
                 else:
-                    break
                     
-                
+                    self.userchoice1()
+        elif search_option == 'e':
+                clear()
+                self.userchoice1()
 #initiation of Application
 if __name__ == '__main__':
    a = Main()
-   a.userchoice1()  
+   a.userchoice1()
    

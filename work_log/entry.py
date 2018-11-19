@@ -18,7 +18,15 @@ class Entry(object):
     
     def __str__(self):
         """sets print formatting for each entry object"""
-        return "date: {}\nproject: {}\nduration: {}\nnotes: {}".format(
-                                     self.date, self.project_name, self.duration, 
-                                     self.optional_notes
-                                    )
+        return '''\ndate: {}
+
+                  \nproject: {}
+
+                  \nduration: {}
+
+                  \nnotes: {}
+                  \n________________________
+                '''.format(
+                             self.date, self.project_name,
+                            self.duration, self.optional_notes
+                           )
