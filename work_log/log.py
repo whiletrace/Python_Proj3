@@ -107,7 +107,7 @@ class WorkLog(object):
         utility = Utility()
         
         # iterate through all entries
-        for entry in self.entries:
+        for entry in self.logread('entries.csv'):
         # if entries match user given date
             if obj == getattr(entry,'duration'):
                 results.append(entry)
@@ -128,8 +128,9 @@ class WorkLog(object):
             value is a list entry ojects
         """
         results =[]
+        utility = Utility()
         # iterate through all entries
-        for entry in self.entries:
+        for entry in self.logread('entries.csv'):
             # if string is present in the entry
             # append entry to list results
             if string in entry.project_name or string in entry.optional_notes:
@@ -156,9 +157,10 @@ class WorkLog(object):
         pdb.set_trace()
         results = []
         pattern = re.compile(user_input)
+        utility = Utility()
 
         # iterate through entries
-        for entry in self.entries:
+        for entry in self.logread('entries.csv'):
             match = pattern.search(entry.project_name or entry.optional_notes)
             # if entry matches a regex pattern 
             if match:

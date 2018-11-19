@@ -251,7 +251,7 @@ instance vaiables: useri
                     clear()
                     print('here are the matching entries: ')
                     "\n"
-                    search_results = worklog_initiate.search_by_date(str2date)
+                    search_results = worklog_initiate.search_by_duration(str2time)
                 # if now matching entries
                 if len(search_results) == 0:
                     # message no entries
@@ -277,7 +277,7 @@ instance vaiables: useri
                 clear()
                 print('here are the matching entries: ')
                 "\n"
-                search_results = worklog_initiate.search_by_date(str2date)
+                search_results = worklog_initiate.search_by_string(string)
                 # if now matching entries
                 if len(search_results) == 0:
                     # message no entries
@@ -304,7 +304,7 @@ instance vaiables: useri
                 clear()
                 print('here are the matching entries: ')
                 "\n"
-                search_results = worklog_initiate.search_by_date(str2date)
+                search_results = worklog_initiate.search_by_pattern(pattern)
             # if now matching entries
                 if len(search_results) == 0:
                     # message no entries
