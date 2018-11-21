@@ -1,5 +1,6 @@
 import collections
 import os
+import pdb
 import re
 
 
@@ -185,6 +186,7 @@ instance vaiables: useri
         if search_option == 'a':
             clear()
             # begin loop for entry search by date data collection
+            pdb.set_trace()
             while True:
 
                 date =input(
@@ -198,6 +200,7 @@ instance vaiables: useri
                 # messsage will prompt until correct format recieved
                 if not match:
                         print('this is not an appropriate format')
+                        continue
                 #if usre input valid
                 elif match:
                     #Utility object instantiated
@@ -226,6 +229,7 @@ instance vaiables: useri
         elif search_option =='b':
             # begin loop for entry search by duration data collection
             while True:
+                pdb.set_trace()
                 duration = input(
                                    'please input the duration of the task '
                                    'that you want to search: '
@@ -238,7 +242,8 @@ instance vaiables: useri
                 # messsage will prompt until correct format recieved
                 if not durmatch:
                     print('this is not an appropriate format')
-                #if usre input valid
+                    continue
+                #if user input valid
                 elif durmatch:
                     #Utility object instantiated
                     utility = Utility()
@@ -290,7 +295,6 @@ instance vaiables: useri
                     self.userchoice1()
         # if pattern prompt for pattern get input
         elif search_option == 'd':
-            pdb.set_trace()
             while True:
                 pattern = input(
                                    'please input your regex'

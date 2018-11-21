@@ -135,7 +135,6 @@ class WorkLog(object):
             # append entry to list results
             if string in entry.project_name or string in entry.optional_notes:
                 results.append(entry)
-                print(entry)
          # converts datetime objects to string for formatting for display
         for entry in results[:]:
             setattr(entry, 'date', utility.date2string(getattr(entry,'date')))
@@ -154,7 +153,7 @@ class WorkLog(object):
             which calls Worklog.logread() that methods return
             value is a list entry ojects
         """
-        pdb.set_trace()
+        
         results = []
         pattern = re.compile(user_input)
         utility = Utility()
