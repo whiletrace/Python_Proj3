@@ -1,6 +1,5 @@
 import collections
 import os
-import pdb
 import re
 
 
@@ -186,7 +185,7 @@ instance vaiables: useri
         if search_option == 'a':
             clear()
             # begin loop for entry search by date data collection
-            pdb.set_trace()
+            
             while True:
 
                 date =input(
@@ -229,7 +228,7 @@ instance vaiables: useri
         elif search_option =='b':
             # begin loop for entry search by duration data collection
             while True:
-                pdb.set_trace()
+                
                 duration = input(
                                    'please input the duration of the task '
                                    'that you want to search: '
